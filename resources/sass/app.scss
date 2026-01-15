@@ -1,0 +1,253 @@
+// Bootstrap & Icons
+@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+// Variables
+$sidebar-width: 260px;
+$sidebar-bg: #1a3a5c;
+$sidebar-color: #fff;
+$primary-color: #0d6efd;
+
+// Layout
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+// Sidebar
+.sidebar {
+    min-width: $sidebar-width;
+    max-width: $sidebar-width;
+    background: $sidebar-bg;
+    min-height: 100vh;
+    transition: all 0.3s;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+
+    .sidebar-content {
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    .sidebar-brand {
+        display: flex;
+        align-items: center;
+        padding: 1.15rem 1.5rem;
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: $sidebar-color;
+        text-decoration: none;
+        background: rgba(0, 0, 0, 0.1);
+
+        .sidebar-brand-icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+    }
+
+    .sidebar-nav {
+        padding: 0;
+        list-style: none;
+        margin-bottom: 0;
+    }
+
+    .sidebar-header {
+        color: rgba(255, 255, 255, 0.5);
+        padding: 1rem 1.5rem 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    .sidebar-item {
+        &.active > .sidebar-link {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid $primary-color;
+        }
+    }
+
+    .sidebar-link {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: all 0.2s;
+        border-left: 3px solid transparent;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: $sidebar-color;
+        }
+
+        i {
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+    }
+
+    .sidebar-dropdown {
+        padding-left: 0;
+
+        .sidebar-item {
+            .sidebar-link {
+                padding-left: 3rem;
+                font-size: 0.9rem;
+            }
+        }
+    }
+}
+
+// Main Content
+.main {
+    width: 100%;
+    min-height: 100vh;
+    margin-left: $sidebar-width;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+    padding: 1.5rem;
+    background: #f5f7fb;
+}
+
+// Navbar
+.navbar-bg {
+    background: #fff;
+    box-shadow: 0 0 2rem 0 rgba(33, 37, 41, 0.1);
+}
+
+.navbar {
+    .navbar-nav {
+        .nav-link {
+            color: #495057;
+        }
+    }
+
+    .avatar {
+        width: 32px;
+        height: 32px;
+        object-fit: cover;
+    }
+}
+
+.hamburger {
+    cursor: pointer;
+    display: block;
+    width: 26px;
+    height: 26px;
+    padding: 4px;
+    
+    &::before,
+    &::after {
+        content: '';
+        display: block;
+        width: 18px;
+        height: 2px;
+        background: #495057;
+        margin: 4px 0;
+        transition: all 0.3s;
+    }
+}
+
+// Footer
+.footer {
+    padding: 1rem 1.5rem;
+    background: #fff;
+    border-top: 1px solid #dee2e6;
+}
+
+// Cards
+.card {
+    margin-bottom: 1.5rem;
+    
+    &.border-0 {
+        box-shadow: 0 0 0.875rem 0 rgba(33, 37, 41, 0.05);
+    }
+}
+
+.stat {
+    opacity: 0.3;
+}
+
+// Tables
+.table {
+    th {
+        font-weight: 600;
+        white-space: nowrap;
+    }
+}
+
+// Badges
+.badge {
+    font-weight: 500;
+}
+
+// DataTables
+.dataTables_wrapper {
+    .dataTables_length,
+    .dataTables_filter,
+    .dataTables_info,
+    .dataTables_paginate {
+        padding: 0.5rem 0;
+    }
+}
+
+// Modal
+.modal-header {
+    &.bg-primary {
+        .btn-close-white {
+            filter: brightness(0) invert(1);
+        }
+    }
+}
+
+// Responsive
+@media (max-width: 991.98px) {
+    .sidebar {
+        margin-left: -$sidebar-width;
+        
+        &.toggled {
+            margin-left: 0;
+        }
+    }
+    
+    .main {
+        margin-left: 0;
+    }
+}
+
+// Utilities
+.bg-success-subtle {
+    background-color: rgba(25, 135, 84, 0.1) !important;
+}
+
+.bg-danger-subtle {
+    background-color: rgba(220, 53, 69, 0.1) !important;
+}
+
+// Scrollbar
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
