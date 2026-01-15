@@ -60,11 +60,11 @@
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
 
-            @guest
+            {{-- @guest
                 <a class="btn-getstarted" href="{{ route('login') }}">Login Aplikasi</a>
             @else
                 <a class="btn-getstarted" href="{{ route('dashboard') }}">Dashboard</a>
-            @endguest
+            @endguest --}}
 
         </div>
     </header>
