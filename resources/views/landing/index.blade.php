@@ -8,27 +8,9 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-5">
-                    <div class="hero-image" data-aos="fade-right" data-aos-delay="100">
+                    <div data-aos="fade-right" data-aos-delay="100">
                         <img src="{{ asset('images/logo-tpq-2.png') }}" alt="TPQ Khairunnisa" class="img-fluid main-image">
-                        {{-- <div class="floating-card emergency-card" data-aos="fade-up" data-aos-delay="300">
-                            <div class="card-content">
-                                <i class="bi bi-telephone-fill"></i>
-                                <div class="text">
-                                    <span class="label">Hubungi Kami</span>
-                                    <span class="number">+62 xxx xxxx xxxx</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="floating-card stats-card" data-aos="fade-up" data-aos-delay="400">
-                            <div class="stat-item">
-                                <span class="number">{{ $stats['total_santri'] }}+</span>
-                                <span class="label">Santri Aktif</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="number">{{ $stats['total_guru'] }}+</span>
-                                <span class="label">Ustadz/Ustadzah</span>
-                            </div>
-                        </div> --}}
+
                     </div>
                 </div>
 
