@@ -9,79 +9,35 @@
             <div class="container">
                 <div class="row d-flex justify-content-center text-center">
                     <div class="col-lg-8">
-                        <h1>Hubungi Kami</h1>
-                        <p class="mb-0">Kami siap membantu Anda dengan informasi yang Anda butuhkan</p>
+                        <h1 class="mb-3">Hubungi Kami</h1>
+                        <p class="mb-0 fs-5">Kami siap membantu Anda dengan informasi yang Anda butuhkan tentang TPQ
+                            Khairunnisa</p>
                     </div>
                 </div>
             </div>
         </div>
-
     </div><!-- End Page Title -->
 
     <!-- Contact Section -->
     <section id="contact" class="contact section">
         <div class="container" data-aos="fade-up" data-aos-delay="100">
-            <div class="mb-4" data-aos="fade-up" data-aos-delay="200">
-                <iframe style="border:0; width: 100%; height: 400px;"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.6666666666665!2d127.38!3d0.79!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMMKwNDcnMjQuMCJOIDEyN8KwMjInNDguMCJF!5e0!3m2!1sid!2sid!4v1234567890"
-                    frameborder="0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
-            </div><!-- End Google Maps -->
 
+
+
+            <!-- Map & Form Section -->
             <div class="row gy-4">
-                <div class="col-lg-4">
-                    <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
-                        <i class="bi bi-geo-alt flex-shrink-0"></i>
-                        <div>
-                            <h3>Alamat</h3>
-                            <p>Jl. MT. Habib Abubakar Al-Atas No.12<br>Kelurahan Gamalama, Ternate<br>Maluku Utara,
-                                Indonesia</p>
-                        </div>
-                    </div><!-- End Info Item -->
-
-                    <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
-                        <i class="bi bi-telephone flex-shrink-0"></i>
-                        <div>
-                            <h3>Telepon</h3>
-                            <p>
-                                <a href="tel:+6285240204028" class="text-decoration-none">085240204028</a><br>
-                                <a href="tel:+6282256219291" class="text-decoration-none">082256219291</a>
-                            </p>
-                        </div>
-                    </div><!-- End Info Item -->
-
-                    <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="500">
-                        <i class="bi bi-whatsapp flex-shrink-0"></i>
-                        <div>
-                            <h3>WhatsApp</h3>
-                            <p>
-                                <a href="https://wa.me/6285240204028" target="_blank"
-                                    class="text-decoration-none">085240204028</a><br>
-                                <a href="https://wa.me/6282256219291" target="_blank"
-                                    class="text-decoration-none">082256219291</a>
-                            </p>
-                        </div>
-                    </div><!-- End Info Item -->
-
-                    <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="600">
-                        <i class="bi bi-envelope flex-shrink-0"></i>
-                        <div>
-                            <h3>Email</h3>
-                            <p><a href="mailto:admin@tpq-khairunnisa.com"
-                                    class="text-decoration-none">admin@tpq-khairunnisa.com</a></p>
-                        </div>
-                    </div><!-- End Info Item -->
-
-                    <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="700">
-                        <i class="bi bi-clock flex-shrink-0"></i>
-                        <div>
-                            <h3>Jam Operasional</h3>
-                            <p>Senin - Jumat: 14.00 - 17.00 WIT<br>Sabtu: 08.00 - 12.00 WIT<br>Minggu: Libur</p>
-                        </div>
-                    </div><!-- End Info Item -->
+                <!-- Google Maps -->
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="map-container">
+                        <iframe style="border:0; width: 100%; height: 500px; border-radius: 10px;"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.6666666666665!2d127.38!3d0.79!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMMKwNDcnMjQuMCJOIDEyN8KwMjInNDguMCJF!5e0!3m2!1sid!2sid!4v1234567890"
+                            frameborder="0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
                 </div>
 
-                <div class="col-lg-8">
+                <!-- Contact Form -->
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
                     @if (session('success'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
@@ -96,104 +52,119 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('landing.contact.submit') }}" method="post" class="php-email-form"
-                        data-aos="fade-up" data-aos-delay="200">
-                        @csrf
-                        <div class="row gy-4">
-                            <div class="col-md-6">
-                                <input type="text" name="name"
-                                    class="form-control @error('name') is-invalid @enderror" placeholder="Nama Lengkap"
-                                    value="{{ old('name') }}" required>
-                                @error('name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-6">
-                                <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                    name="email" placeholder="Email" value="{{ old('email') }}" required>
-                                @error('email')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-6">
-                                <input type="text" class="form-control @error('phone') is-invalid @enderror"
-                                    name="phone" placeholder="Nomor Telepon (contoh: 081234567890)"
-                                    value="{{ old('phone') }}" required>
-                                @error('phone')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-6">
-                                <select class="form-select @error('subject') is-invalid @enderror" name="subject" required>
-                                    <option value="">Pilih Topik</option>
-                                    <option value="Pendaftaran Santri Baru"
-                                        {{ old('subject') == 'Pendaftaran Santri Baru' ? 'selected' : '' }}>
-                                        Pendaftaran Santri Baru
-                                    </option>
-                                    <option value="Informasi Program"
-                                        {{ old('subject') == 'Informasi Program' ? 'selected' : '' }}>
-                                        Informasi Program
-                                    </option>
-                                    <option value="Biaya Pendidikan"
-                                        {{ old('subject') == 'Biaya Pendidikan' ? 'selected' : '' }}>
-                                        Biaya Pendidikan
-                                    </option>
-                                    <option value="Jadwal Kelas" {{ old('subject') == 'Jadwal Kelas' ? 'selected' : '' }}>
-                                        Jadwal Kelas
-                                    </option>
-                                    <option value="Lainnya" {{ old('subject') == 'Lainnya' ? 'selected' : '' }}>
-                                        Lainnya
-                                    </option>
-                                </select>
-                                @error('subject')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-12">
-                                <textarea class="form-control @error('message') is-invalid @enderror" name="message" rows="6"
-                                    placeholder="Pesan" required>{{ old('message') }}</textarea>
-                                @error('message')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-12 text-center">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-send me-2"></i>Kirim Pesan
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
-                    <!-- Quick Contact Buttons -->
-                    <div class="row mt-4" data-aos="fade-up" data-aos-delay="300">
-                        <div class="col-md-6 mb-3">
-                            <a href="https://wa.me/6285240204028?text=Assalamualaikum, saya ingin bertanya tentang TPQ Khairunnisa"
-                                target="_blank"
-                                class="btn btn-success w-100 d-flex align-items-center justify-content-center">
-                                <i class="bi bi-whatsapp me-2 fs-5"></i>
-                                <div class="text-start">
-                                    <small class="d-block">Hubungi via WhatsApp</small>
-                                    <strong>085240204028</strong>
+                    <div class="contact-form-wrapper">
+                        <h3 class="mb-4">Kirim Pesan</h3>
+                        <form action="{{ route('landing.contact.submit') }}" method="post" class="php-email-form">
+                            @csrf
+                            <div class="row gy-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" name="name"
+                                            class="form-control @error('name') is-invalid @enderror"
+                                            placeholder="Nama Lengkap" value="{{ old('name') }}" required>
+                                        @error('name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </a>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <a href="tel:+6285240204028"
-                                class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center">
-                                <i class="bi bi-telephone me-2 fs-5"></i>
-                                <div class="text-start">
-                                    <small class="d-block">Telepon Sekarang</small>
-                                    <strong>085240204028</strong>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                            name="email" placeholder="Email" value="{{ old('email') }}" required>
+                                        @error('email')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </a>
-                        </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control @error('phone') is-invalid @enderror"
+                                            name="phone" placeholder="Nomor Telepon" value="{{ old('phone') }}" required>
+                                        @error('phone')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <select class="form-select @error('subject') is-invalid @enderror" name="subject"
+                                            required>
+                                            <option value="">Pilih Topik</option>
+                                            <option value="Pendaftaran Santri Baru"
+                                                {{ old('subject') == 'Pendaftaran Santri Baru' ? 'selected' : '' }}>
+                                                Pendaftaran Santri Baru
+                                            </option>
+                                            <option value="Informasi Program"
+                                                {{ old('subject') == 'Informasi Program' ? 'selected' : '' }}>
+                                                Informasi Program
+                                            </option>
+                                            <option value="Jadwal Kelas"
+                                                {{ old('subject') == 'Jadwal Kelas' ? 'selected' : '' }}>
+                                                Jadwal Kelas
+                                            </option>
+                                            <option value="Metode Pembelajaran"
+                                                {{ old('subject') == 'Metode Pembelajaran' ? 'selected' : '' }}>
+                                                Metode Pembelajaran
+                                            </option>
+                                            <option value="Lainnya" {{ old('subject') == 'Lainnya' ? 'selected' : '' }}>
+                                                Lainnya
+                                            </option>
+                                        </select>
+                                        @error('subject')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <textarea class="form-control @error('message') is-invalid @enderror" name="message" rows="6"
+                                            placeholder="Tulis pesan Anda di sini..." required>{{ old('message') }}</textarea>
+                                        @error('message')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="bi bi-send me-2"></i>Kirim Pesan
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </div><!-- End Contact Form -->
+                </div>
+            </div>
+
+            <!-- Quick Contact Buttons -->
+            <div class="row mt-5" data-aos="fade-up" data-aos-delay="400">
+                <div class="col-lg-6 mb-3">
+                    <a href="https://wa.me/6285240204028?text=Assalamualaikum, saya ingin bertanya tentang TPQ Khairunnisa"
+                        target="_blank" class="quick-contact-btn whatsapp-btn">
+                        <div class="icon">
+                            <i class="bi bi-whatsapp"></i>
+                        </div>
+                        <div class="content">
+                            <span class="label">Hubungi via WhatsApp</span>
+                            <strong class="number">085240204028</strong>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <a href="tel:+6285240204028" class="quick-contact-btn phone-btn">
+                        <div class="icon">
+                            <i class="bi bi-telephone"></i>
+                        </div>
+                        <div class="content">
+                            <span class="label">Telepon Sekarang</span>
+                            <strong class="number">085240204028</strong>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </section><!-- /Contact Section -->
@@ -210,11 +181,11 @@
                 <div class="col-lg-10" data-aos="fade-up" data-aos-delay="100">
                     <div class="faq-container">
                         <div class="faq-item faq-active">
-                            <h3>Berapa biaya pendaftaran dan SPP bulanan?</h3>
+                            <h3>Apakah TPQ Khairunnisa berbayar?</h3>
                             <div class="faq-content">
-                                <p>Untuk informasi lengkap mengenai biaya pendaftaran dan SPP bulanan, silakan hubungi kami
-                                    langsung melalui telepon atau WhatsApp di nomor 085240204028 atau 082256219291.
-                                    Kami juga menyediakan program beasiswa untuk santri berprestasi.</p>
+                                <p>Tidak, TPQ Khairunnisa adalah lembaga pendidikan Al-Quran yang 100% GRATIS. Kami tidak
+                                    memungut biaya pendaftaran, SPP, maupun biaya lainnya. Pendidikan Al-Quran adalah hak
+                                    setiap muslim dan kami berkomitmen untuk menyediakannya secara cuma-cuma.</p>
                             </div>
                             <i class="faq-toggle bi bi-chevron-right"></i>
                         </div>
@@ -232,7 +203,8 @@
                         <div class="faq-item">
                             <h3>Apa saja persyaratan pendaftaran?</h3>
                             <div class="faq-content">
-                                <p>Persyaratan pendaftaran meliputi: Fotocopy Akta Kelahiran, Fotocopy Kartu Keluarga, Pas
+                                <p>Persyaratan pendaftaran sangat sederhana: Fotocopy Akta Kelahiran, Fotocopy Kartu
+                                    Keluarga, Pas
                                     Foto 3x4 (2 lembar), dan mengisi formulir pendaftaran. Untuk informasi lebih detail,
                                     silakan hubungi kami di 085240204028 atau email admin@tpq-khairunnisa.com</p>
                             </div>
@@ -244,7 +216,7 @@
                             <div class="faq-content">
                                 <p>Kami menggunakan metode pembelajaran Iqra yang terstruktur dan efektif. Setiap santri
                                     akan dibimbing sesuai dengan kemampuannya masing-masing. Kami juga menggunakan sistem
-                                    monitoring digital untuk memantau perkembangan setiap santri.</p>
+                                    monitoring digital untuk memantau perkembangan setiap santri secara berkala.</p>
                             </div>
                             <i class="faq-toggle bi bi-chevron-right"></i>
                         </div>
@@ -254,7 +226,7 @@
                             <div class="faq-content">
                                 <p>Ya, orang tua dapat memantau perkembangan santri melalui sistem digital kami. Kami juga
                                     rutin memberikan laporan perkembangan santri setiap bulannya dan mengadakan pertemuan
-                                    dengan orang tua secara berkala.</p>
+                                    dengan orang tua secara berkala untuk membahas progress pembelajaran.</p>
                             </div>
                             <i class="faq-toggle bi bi-chevron-right"></i>
                         </div>
@@ -275,7 +247,17 @@
                                 <p>Anda dapat mendaftar dengan datang langsung ke TPQ pada jam operasional, atau hubungi
                                     kami terlebih dahulu via WhatsApp di 085240204028 untuk membuat janji. Kami akan
                                     memberikan penjelasan lengkap tentang prosedur pendaftaran dan persyaratan yang
-                                    diperlukan.</p>
+                                    diperlukan. Ingat, pendaftaran dan pembelajaran di TPQ kami 100% GRATIS.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div>
+
+                        <div class="faq-item">
+                            <h3>Apakah ada program khusus selain pembelajaran Al-Quran?</h3>
+                            <div class="faq-content">
+                                <p>Selain pembelajaran membaca Al-Quran dengan metode Iqra, kami juga mengadakan program
+                                    tahfidz (hafalan Al-Quran), pembelajaran akhlak dan adab islami, serta kegiatan-kegiatan
+                                    keagamaan lainnya untuk membentuk karakter santri yang berakhlakul karimah.</p>
                             </div>
                             <i class="faq-toggle bi bi-chevron-right"></i>
                         </div>
@@ -288,36 +270,218 @@
 
 @push('styles')
     <style>
-        .info-item a {
-            color: inherit;
+        /* Info Cards */
+        .info-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 30px 20px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+        }
+
+        .info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .info-card .icon-box {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .info-card .icon-box i {
+            color: #fff;
+            font-size: 2rem;
+        }
+
+        .info-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 15px 0 10px;
+            color: #2c3e50;
+        }
+
+        .info-card p {
+            color: #6c757d;
+            margin: 0;
+            line-height: 1.8;
+        }
+
+        .info-card a {
+            color: #667eea;
+            text-decoration: none;
             transition: color 0.3s ease;
         }
 
-        .info-item a:hover {
-            color: #2563eb;
+        .info-card a:hover {
+            color: #764ba2;
+            text-decoration: underline;
         }
 
-        .btn-success {
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        /* Map Container */
+        .map-container {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Contact Form Wrapper */
+        .contact-form-wrapper {
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
+            height: 100%;
+        }
+
+        .contact-form-wrapper h3 {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .php-email-form .form-control,
+        .php-email-form .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .php-email-form .form-control:focus,
+        .php-email-form .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .php-email-form textarea.form-control {
+            resize: vertical;
+        }
+
+        .php-email-form .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
-            padding: 15px 20px;
+            padding: 15px 30px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s ease;
         }
 
-        .btn-success:hover {
+        .php-email-form .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Quick Contact Buttons */
+        .quick-contact-btn {
+            display: flex;
+            align-items: center;
+            padding: 25px 30px;
+            border-radius: 15px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: #fff;
+        }
+
+        .whatsapp-btn:hover {
             background: linear-gradient(135deg, #128C7E 0%, #075E54 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 35px rgba(37, 211, 102, 0.4);
+            color: #fff;
         }
 
-        .btn-outline-primary {
-            padding: 15px 20px;
-            border: 2px solid #2563eb;
+        .phone-btn {
+            background: #fff;
+            color: #667eea;
+            border: 2px solid #667eea;
         }
 
-        .btn-outline-primary:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+        .phone-btn:hover {
+            background: #667eea;
+            color: #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .quick-contact-btn .icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .quick-contact-btn .icon i {
+            font-size: 1.8rem;
+        }
+
+        .phone-btn .icon {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .quick-contact-btn .content {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .quick-contact-btn .label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            opacity: 0.9;
+        }
+
+        .quick-contact-btn .number {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .info-card {
+                margin-bottom: 20px;
+            }
+
+            .contact-form-wrapper {
+                padding: 25px;
+                margin-top: 30px;
+            }
+
+            .quick-contact-btn {
+                padding: 20px;
+            }
+
+            .quick-contact-btn .icon {
+                width: 50px;
+                height: 50px;
+                margin-right: 15px;
+            }
+
+            .quick-contact-btn .icon i {
+                font-size: 1.5rem;
+            }
+
+            .quick-contact-btn .number {
+                font-size: 1rem;
+            }
         }
     </style>
 @endpush

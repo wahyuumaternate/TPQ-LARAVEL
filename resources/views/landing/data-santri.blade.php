@@ -19,44 +19,123 @@
     </div><!-- End Page Title -->
 
     <!-- Stats Section -->
-    <section class="stats-section section">
+    <section class="stats-section section py-5 bg-light">
         <div class="container" data-aos="fade-up" data-aos-delay="100">
-            <div class="row gy-4">
+            <div class="row g-4">
+                <!-- Total Santri Card -->
                 <div class="col-lg-4 col-md-6">
-                    <div class="stats-item d-flex align-items-center w-100 h-100">
-                        <i class="bi bi-people color-blue flex-shrink-0"></i>
-                        <div>
-                            <span data-purecounter-start="0" data-purecounter-end="{{ $totalSantri }}"
-                                data-purecounter-duration="1" class="purecounter"></span>
-                            <p>Total Santri</p>
+                    <div class="stats-card card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center">
+                                <div
+                                    class="stats-icon bg-dark text-white rounded-3 d-flex align-items-center justify-content-center flex-shrink-0 me-3">
+                                    <i class="bi bi-people fs-3"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h3 class="mb-0 fw-bold text-dark">
+                                        <span data-purecounter-start="0" data-purecounter-end="{{ $totalSantri }}"
+                                            data-purecounter-duration="1" class="purecounter">0</span>
+                                    </h3>
+                                    <p class="text-muted mb-0 small">Total Santri</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Total Guru Card -->
                 <div class="col-lg-4 col-md-6">
-                    <div class="stats-item d-flex align-items-center w-100 h-100">
-                        <i class="bi bi-person-badge color-orange flex-shrink-0"></i>
-                        <div>
-                            <span data-purecounter-start="0" data-purecounter-end="{{ $totalGuru }}"
-                                data-purecounter-duration="1" class="purecounter"></span>
-                            <p>Total Guru</p>
+                    <div class="stats-card card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center">
+                                <div
+                                    class="stats-icon bg-dark text-white rounded-3 d-flex align-items-center justify-content-center flex-shrink-0 me-3">
+                                    <i class="bi bi-person-badge fs-3"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h3 class="mb-0 fw-bold text-dark">
+                                        <span data-purecounter-start="0" data-purecounter-end="{{ $totalGuru }}"
+                                            data-purecounter-duration="1" class="purecounter">0</span>
+                                    </h3>
+                                    <p class="text-muted mb-0 small">Total Guru</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Total Kelas Card -->
                 <div class="col-lg-4 col-md-6">
-                    <div class="stats-item d-flex align-items-center w-100 h-100">
-                        <i class="bi bi-door-open color-green flex-shrink-0"></i>
-                        <div>
-                            <span data-purecounter-start="0" data-purecounter-end="{{ $totalKelas }}"
-                                data-purecounter-duration="1" class="purecounter"></span>
-                            <p>Total Kelas</p>
+                    <div class="stats-card card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center">
+                                <div
+                                    class="stats-icon bg-dark text-white rounded-3 d-flex align-items-center justify-content-center flex-shrink-0 me-3">
+                                    <i class="bi bi-door-open fs-3"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h3 class="mb-0 fw-bold text-dark">
+                                        <span data-purecounter-start="0" data-purecounter-end="{{ $totalKelas }}"
+                                            data-purecounter-duration="1" class="purecounter">0</span>
+                                    </h3>
+                                    <p class="text-muted mb-0 small">Total Kelas</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section><!-- /Stats Section -->
+
+    <style>
+        /* Simple Black & White Stats Section */
+        .stats-section {
+            background-color: #f8f9fa;
+        }
+
+        .stats-card {
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .stats-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #212529;
+        }
+
+        .stats-card h3 {
+            font-size: 2.5rem;
+            color: #212529;
+        }
+
+        .stats-card .text-muted {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats-card h3 {
+                font-size: 2rem;
+            }
+
+            .stats-icon {
+                width: 50px;
+                height: 50px;
+            }
+
+            .stats-icon i {
+                font-size: 1.5rem !important;
+            }
+        }
+    </style>
 
     <!-- Data Santri Table Section -->
     <section id="data-santri-table" class="section">

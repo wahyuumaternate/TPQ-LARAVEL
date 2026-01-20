@@ -17,10 +17,10 @@
                 <div class="col-lg-7">
                     <div class="hero-content" data-aos="fade-left" data-aos-delay="200">
                         <div class="badge-container">
-                            <span class="hero-badge">Taman Pendidikan Al-Quran Terpercaya</span>
+                            <span class="hero-badge">Taman Pendidikan Al-Quran Gratis</span>
                         </div>
 
-                        <h1 class="hero-title">Selamat Datang di TPQ Khairunnisa</h1>
+                        <h1>Selamat Datang di TPQ Khairunnisa</h1>
                         <p class="hero-description">
                             Sistem digitalisasi Santri, Guru dan Orang Tua. Login data detail, Laporan Statistik
                             dan berbagai Berita dan informasi tentang TPQ Khairunnisa Ternate.

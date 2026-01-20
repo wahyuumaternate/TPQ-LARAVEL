@@ -161,20 +161,102 @@
     </div>
 
     @push('scripts')
-        <!-- CKEditor -->
-        <script src="https://cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+        <!-- TinyMCE -->
+        <script src="{{ asset('tinymce/tinymce.min.js') }}"></script>
+
         <script>
-            // Initialize CKEditor
-            CKEDITOR.replace('isi', {
-                height: 400,
-                filebrowserUploadUrl: "{{ route('berita.store') }}",
-                filebrowserUploadMethod: 'form'
+            // Initialize TinyMCE
+            tinymce.init({
+                selector: '#isi',
+                height: 500,
+                menubar: true,
+                plugins: [
+                    'advlist', 'autolink', 'lists', 'link', 'charmap', 'preview',
+                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                    'insertdatetime', 'table', 'code', 'help', 'wordcount'
+                ],
+                toolbar: 'undo redo | blocks | ' +
+                    'bold italic forecolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat | code | help',
+                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+
+                // Image upload handler
+
+
+                // File picker for media
+                file_picker_types: 'image media',
+                file_picker_callback: function(callback, value, meta) {
+                    if (meta.filetype === 'image') {
+                        var input = document.createElement('input');
+                        input.setAttribute('type', 'file');
+                        input.setAttribute('accept', 'image/*');
+
+                        input.onchange = function() {
+                            var file = this.files[0];
+                            var reader = new FileReader();
+
+                            reader.onload = function() {
+                                var id = 'blobid' + (new Date()).getTime();
+                                var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                                var base64 = reader.result.split(',')[1];
+                                var blobInfo = blobCache.create(id, file, base64);
+                                blobCache.add(blobInfo);
+                                callback(blobInfo.blobUri(), {
+                                    title: file.name
+                                });
+                            };
+
+                            reader.readAsDataURL(file);
+                        };
+
+                        input.click();
+                    }
+                },
+
+                // Language
+                language: 'id',
+
+                // Automatic resize
+                min_height: 400,
+                max_height: 800,
+                autoresize_on_init: true,
+
+                // Paste options
+                paste_data_images: true,
+                paste_as_text: false,
+
+                // Link options
+                link_default_target: '_blank',
+                link_title: false,
+
+                // Misc options
+                branding: false,
+                promotion: false,
+                statusbar: true,
+                elementpath: false,
+                resize: true
             });
 
             // Image Preview
             function previewImage(event) {
                 const file = event.target.files[0];
                 if (file) {
+                    // Validate file size (2MB)
+                    if (file.size > 2048000) {
+                        alert('Ukuran file terlalu besar! Maksimal 2MB');
+                        event.target.value = '';
+                        return;
+                    }
+
+                    // Validate file type
+                    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                    if (!allowedTypes.includes(file.type)) {
+                        alert('Format file tidak didukung! Gunakan JPG, PNG, atau GIF');
+                        event.target.value = '';
+                        return;
+                    }
+
                     const reader = new FileReader();
                     reader.onload = function(e) {
                         document.getElementById('preview').src = e.target.result;
@@ -199,6 +281,54 @@
                     bsAlert.close();
                 });
             }, 5000);
+
+            // Form validation before submit
+            document.querySelector('form').addEventListener('submit', function(e) {
+                // Update TinyMCE content to textarea
+                tinymce.triggerSave();
+
+                // Validate required fields
+                const judul = document.getElementById('judul').value.trim();
+                const isi = tinymce.get('isi').getContent();
+
+                if (!judul) {
+                    e.preventDefault();
+                    alert('Judul berita wajib diisi!');
+                    document.getElementById('judul').focus();
+                    return false;
+                }
+
+                if (!isi || isi === '') {
+                    e.preventDefault();
+                    alert('Isi berita wajib diisi!');
+                    tinymce.get('isi').focus();
+                    return false;
+                }
+            });
+
+            // Character counter for ringkasan
+            const ringkasanField = document.getElementById('ringkasan');
+            if (ringkasanField) {
+                const maxLength = 500;
+                const counterDiv = document.createElement('small');
+                counterDiv.className = 'text-muted float-end';
+                ringkasanField.parentElement.querySelector('small').after(counterDiv);
+
+                function updateCounter() {
+                    const length = ringkasanField.value.length;
+                    counterDiv.textContent = `${length}/${maxLength} karakter`;
+                    if (length > maxLength) {
+                        counterDiv.classList.remove('text-muted');
+                        counterDiv.classList.add('text-danger');
+                    } else {
+                        counterDiv.classList.remove('text-danger');
+                        counterDiv.classList.add('text-muted');
+                    }
+                }
+
+                ringkasanField.addEventListener('input', updateCounter);
+                updateCounter();
+            }
         </script>
     @endpush
 @endsection

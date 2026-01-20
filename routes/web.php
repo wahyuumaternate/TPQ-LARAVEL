@@ -92,8 +92,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('pengumuman/{pengumuman}/resend-wa', [PengumumanController::class, 'resendWhatsApp'])->name('pengumuman.resend-wa');
 
     // ============ BERITA (Admin) ============
-    Route::resource('berita', BeritaController::class);
-    Route::post('berita/{berita}/toggle-publish', [BeritaController::class, 'togglePublish'])->name('berita.toggle-publish');
+    // Define routes manually instead of using resource() to fix parameter naming
+    Route::prefix('berita')
+        ->name('berita.')
+        ->group(function () {
+            Route::get('/', [BeritaController::class, 'index'])->name('index');
+            Route::get('/create', [BeritaController::class, 'create'])->name('create');
+            Route::post('/', [BeritaController::class, 'store'])->name('store');
+            Route::get('/{berita}', [BeritaController::class, 'show'])->name('show');
+            Route::get('/{berita}/edit', [BeritaController::class, 'edit'])->name('edit');
+            Route::put('/{berita}', [BeritaController::class, 'update'])->name('update');
+            Route::delete('/{berita}', [BeritaController::class, 'destroy'])->name('destroy');
+            Route::post('/{berita}/toggle-publish', [BeritaController::class, 'togglePublish'])->name('toggle-publish');
+        });
 
     // ============ LAPORAN ============
     Route::prefix('laporan')

@@ -122,9 +122,6 @@ class BeritaController extends Controller
     {
         $berita->load('creator');
 
-        // Increment views
-        $berita->incrementViews();
-
         // Get related news (same category)
         $relatedNews = Berita::published()->where('kategori', $berita->kategori)->where('id', '!=', $berita->id)->limit(3)->get();
 

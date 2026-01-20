@@ -70,9 +70,9 @@
                     {{-- <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('laporan.progress-bulanan') }}">Progress Bulanan</a>
                     </li> --}}
-                    <li class="sidebar-item">
+                    {{-- <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('laporan.absensi') }}">Laporan Absensi</a>
-                    </li>
+                    </li> --}}
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route('laporan.statistik') }}">Statistik</a>
                     </li>
