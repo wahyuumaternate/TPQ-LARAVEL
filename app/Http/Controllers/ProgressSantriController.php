@@ -39,11 +39,6 @@ class ProgressSantriController extends Controller
             $query->where('status', $request->status);
         }
 
-        // Filter by nilai
-        if ($request->filled('nilai')) {
-            $query->where('nilai', $request->nilai);
-        }
-
         // Filter by tanggal
         if ($request->filled('tanggal_dari')) {
             $query->whereDate('tanggal', '>=', $request->tanggal_dari);
@@ -97,9 +92,9 @@ class ProgressSantriController extends Controller
                 'tanggal' => 'required|date',
                 'jilid' => 'required|string|max:255',
                 'halaman' => 'nullable|string|max:255',
-                'ayat' => 'nullable|string|max:255',
+                'dari_ayat' => 'nullable|string|max:255',
+                'sampai_ayat' => 'nullable|string|max:255',
                 'surah' => 'nullable|string|max:255',
-                'nilai' => 'nullable|in:A,B,C,D,E',
                 'status' => 'required|in:lancar,kurang_lancar,mengulang',
                 'catatan' => 'nullable|string',
                 'hafalan' => 'boolean',
@@ -166,9 +161,9 @@ class ProgressSantriController extends Controller
                 'tanggal' => 'required|date',
                 'jilid' => 'required|string|max:255',
                 'halaman' => 'nullable|string|max:255',
-                'ayat' => 'nullable|string|max:255',
+                'dari_ayat' => 'nullable|string|max:255',
+                'sampai_ayat' => 'nullable|string|max:255',
                 'surah' => 'nullable|string|max:255',
-                'nilai' => 'nullable|in:A,B,C,D,E',
                 'status' => 'required|in:lancar,kurang_lancar,mengulang',
                 'catatan' => 'nullable|string',
                 'hafalan' => 'boolean',

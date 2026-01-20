@@ -2,12 +2,6 @@
 
 @section('title', 'Edit Santri')
 
-@push('styles')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"
-        rel="stylesheet" />
-@endpush
-
 @section('content')
     <div class="container-fluid px-4 py-3">
         <!-- Header -->
@@ -142,30 +136,37 @@
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label fw-semibold">Pilih Orang Tua <span class="text-danger">*</span></label>
-                            <select class="form-select @error('orangtua_id') is-invalid @enderror" id="orangtua_id"
-                                name="orangtua_id" style="width: 100%" required>
-                                <option value="">-- Pilih Orang Tua --</option>
-                                @foreach ($orangtuaList as $orangtua)
-                                    <option value="{{ $orangtua->id }}" data-ayah="{{ $orangtua->nama_ayah }}"
-                                        data-ibu="{{ $orangtua->nama_ibu }}" data-hp="{{ $orangtua->no_hp }}"
-                                        data-alamat="{{ $orangtua->alamat }}"
-                                        data-kelurahan="{{ $orangtua->kelurahan }}"
-                                        data-kecamatan="{{ $orangtua->kecamatan }}" data-kota="{{ $orangtua->kota }}"
-                                        data-status-ayah="{{ $orangtua->status_ayah }}"
-                                        data-status-ibu="{{ $orangtua->status_ibu }}"
-                                        data-status-anak="{{ $orangtua->status_anak }}"
-                                        {{ old('orangtua_id', $santri->orangtua_id) == $orangtua->id ? 'selected' : '' }}>
-                                        {{ $orangtua->no_id }} - {{ $orangtua->nama_lengkap }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <div class="input-group">
+                                <select class="form-select @error('orangtua_id') is-invalid @enderror" id="orangtua_id"
+                                    name="orangtua_id" required>
+                                    <option value="">-- Pilih Orang Tua --</option>
+                                    @foreach ($orangtuaList as $orangtua)
+                                        <option value="{{ $orangtua->id }}" data-ayah="{{ $orangtua->nama_ayah }}"
+                                            data-ibu="{{ $orangtua->nama_ibu }}" data-hp="{{ $orangtua->no_hp }}"
+                                            data-alamat="{{ $orangtua->alamat }}"
+                                            data-kelurahan-id="{{ $orangtua->kelurahan_id }}"
+                                            data-kecamatan-id="{{ $orangtua->kelurahan?->kecamatan_id }}"
+                                            data-kelurahan="{{ $orangtua->kelurahan?->nama }}"
+                                            data-kecamatan="{{ $orangtua->kelurahan?->kecamatan?->nama }}"
+                                            data-kota="Kota Ternate" data-status-ayah="{{ $orangtua->status_ayah }}"
+                                            data-status-ibu="{{ $orangtua->status_ibu }}"
+                                            data-status-anak="{{ $orangtua->status_anak }}"
+                                            {{ old('orangtua_id', $santri->orangtua_id) == $orangtua->id ? 'selected' : '' }}>
+                                            {{ $orangtua->no_id }} - {{ $orangtua->nama_lengkap }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#tambahOrangtuaModal">
+                                    <i class="bi bi-plus-circle"></i> Tambah Baru
+                                </button>
+                            </div>
                             @error('orangtua_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                             <small class="text-muted">
-                                <i class="bi bi-info-circle"></i> Pilih orang tua dari database.
-                                <a href="{{ route('orangtua.create') }}" target="_blank" class="text-primary">Tambah
-                                    orang tua baru</a>
+                                <i class="bi bi-info-circle"></i> Pilih orang tua dari database atau tambah baru jika belum
+                                terdaftar.
                             </small>
                         </div>
 
@@ -414,29 +415,163 @@
             </div>
         </form>
     </div>
+
+    <!-- Modal Tambah Orang Tua -->
+    <div class="modal fade" id="tambahOrangtuaModal" tabindex="-1" aria-labelledby="tambahOrangtuaModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="tambahOrangtuaModalLabel">
+                        <i class="bi bi-plus-circle"></i> Tambah Data Orang Tua Baru
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <form id="formTambahOrangtua">
+                    @csrf
+                    <div class="modal-body">
+                        <!-- Alert untuk error/success -->
+                        <div id="modalAlert" class="alert d-none" role="alert"></div>
+
+                        <div class="row g-3">
+                            <!-- Data Ayah -->
+                            <div class="col-12">
+                                <h6 class="border-bottom pb-2"><i class="bi bi-person"></i> Data Ayah</h6>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Nama Ayah</label>
+                                <input type="text" class="form-control" id="modal_nama_ayah" name="nama_ayah">
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">Pekerjaan Ayah</label>
+                                <input type="text" class="form-control" id="modal_pekerjaan_ayah"
+                                    name="pekerjaan_ayah">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">Status Ayah <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="modal_status_ayah" name="status_ayah" required>
+                                    <option value="Hidup" selected>Hidup</option>
+                                    <option value="Wafat">Wafat</option>
+                                </select>
+                            </div>
+
+                            <!-- Data Ibu -->
+                            <div class="col-12 mt-3">
+                                <h6 class="border-bottom pb-2"><i class="bi bi-person"></i> Data Ibu</h6>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Nama Ibu</label>
+                                <input type="text" class="form-control" id="modal_nama_ibu" name="nama_ibu">
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">Pekerjaan Ibu</label>
+                                <input type="text" class="form-control" id="modal_pekerjaan_ibu"
+                                    name="pekerjaan_ibu">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">Status Ibu <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="modal_status_ibu" name="status_ibu" required>
+                                    <option value="Hidup" selected>Hidup</option>
+                                    <option value="Wafat">Wafat</option>
+                                </select>
+                            </div>
+
+                            <!-- Status Anak -->
+                            <div class="col-12 mt-3">
+                                <h6 class="border-bottom pb-2"><i class="bi bi-shield-check"></i> Status</h6>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label fw-semibold">Status Anak <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="modal_status_anak" name="status_anak" required>
+                                    <option value="Dalam Asuhan OT" selected>Dalam Asuhan Orang Tua</option>
+                                    <option value="Anak Yatim">Anak Yatim (Ayah Wafat)</option>
+                                    <option value="Anak Piatu">Anak Piatu (Ibu Wafat)</option>
+                                    <option value="Anak Yatim Piatu">Anak Yatim Piatu (Ayah & Ibu Wafat)</option>
+                                </select>
+                            </div>
+
+                            <!-- Kontak -->
+                            <div class="col-12 mt-3">
+                                <h6 class="border-bottom pb-2"><i class="bi bi-telephone"></i> Kontak</h6>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">No. HP/WA</label>
+                                <input type="text" class="form-control" id="modal_no_hp" name="no_hp"
+                                    placeholder="08xxxxxxxxxx">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">No. HP Alternatif</label>
+                                <input type="text" class="form-control" id="modal_no_hp_alternatif"
+                                    name="no_hp_alternatif">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label fw-semibold">Email</label>
+                                <input type="email" class="form-control" id="modal_email" name="email">
+                            </div>
+
+                            <!-- Alamat -->
+                            <div class="col-12 mt-3">
+                                <h6 class="border-bottom pb-2"><i class="bi bi-geo-alt"></i> Alamat</h6>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Alamat Lengkap</label>
+                                <textarea class="form-control" id="modal_alamat" name="alamat" rows="2"
+                                    placeholder="Jl. Sultan Babullah No. 123"></textarea>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label fw-semibold">Kecamatan</label>
+                                <select class="form-select" id="modal_kecamatan_id" name="modal_kecamatan_id">
+                                    <option value="">-- Pilih Kecamatan --</option>
+                                    @foreach ($kecamatanList as $kecamatan)
+                                        <option value="{{ $kecamatan->id }}">{{ $kecamatan->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label fw-semibold">Kelurahan</label>
+                                <select class="form-select" id="modal_kelurahan_id" name="kelurahan_id" disabled>
+                                    <option value="">-- Pilih Kecamatan Dahulu --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label fw-semibold">Kode Pos</label>
+                                <input type="text" class="form-control" id="modal_kode_pos" name="kode_pos"
+                                    maxlength="10">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-success" id="btnSimpanOrangtua">
+                            <i class="bi bi-save"></i> Simpan Data
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Initialize Select2 for Orangtua
-            $('#orangtua_id').select2({
-                theme: 'bootstrap-5',
-                placeholder: '-- Pilih Orang Tua --',
-                allowClear: true,
-                width: '100%'
-            });
+            console.log('Initializing edit form scripts...');
 
             // Auto-fill data when orangtua selected
             $('#orangtua_id').on('change', function() {
                 const selectedOption = $(this).find('option:selected');
 
                 if (selectedOption.val()) {
-                    // Show info panel
                     $('#orangtua-info').show();
 
-                    // Fill info
                     const namaAyah = selectedOption.data('ayah') || '-';
                     const namaIbu = selectedOption.data('ibu') || '-';
                     const statusAyah = selectedOption.data('status-ayah');
@@ -448,13 +583,11 @@
                     $('#info-hp').text(selectedOption.data('hp') || '-');
                     $('#info-alamat').text(selectedOption.data('alamat') || '-');
 
-                    // Status badges
                     $('#badge-ayah').removeClass().addClass('badge').addClass(statusAyah === 'Hidup' ?
                         'bg-success' : 'bg-secondary').text(statusAyah);
                     $('#badge-ibu').removeClass().addClass('badge').addClass(statusIbu === 'Hidup' ?
                         'bg-success' : 'bg-secondary').text(statusIbu);
 
-                    // Status anak badge
                     let badgeClass = 'bg-info';
                     switch (statusAnak) {
                         case 'Dalam Asuhan OT':
@@ -472,13 +605,11 @@
                     }
                     $('#badge-anak').removeClass().addClass('badge').addClass(badgeClass).text(statusAnak);
 
-                    // Auto-fill form fields
                     $('#alamat').val(selectedOption.data('alamat') || '');
                     $('#kelurahan').val(selectedOption.data('kelurahan') || '');
                     $('#kecamatan').val(selectedOption.data('kecamatan') || '');
                     $('#kota').val(selectedOption.data('kota') || '');
 
-                    // Auto-fill wali info if empty
                     if (!$('#no_hp_wali').val()) {
                         $('#no_hp_wali').val(selectedOption.data('hp') || '');
                     }
@@ -490,12 +621,10 @@
                         }
                     }
                 } else {
-                    // Hide info panel
                     $('#orangtua-info').hide();
                 }
             });
 
-            // Trigger change if already selected (for edit mode)
             if ($('#orangtua_id').val()) {
                 $('#orangtua_id').trigger('change');
             }
@@ -520,6 +649,181 @@
                     $('#preview').hide();
                     $('#preview-text').show();
                 }
+            });
+
+            // ============================================
+            // MODAL TAMBAH ORANG TUA
+            // ============================================
+
+            // Cascading dropdown di modal
+            $('#modal_kecamatan_id').on('change', function() {
+                const kecamatanId = $(this).val();
+                const $kelurahan = $('#modal_kelurahan_id');
+
+                if (kecamatanId) {
+                    $kelurahan.prop('disabled', true).html('<option value="">Loading...</option>');
+
+                    $.ajax({
+                        url: '/api/santri/kelurahan/' + kecamatanId,
+                        type: 'GET',
+                        success: function(data) {
+                            $kelurahan.html('<option value="">-- Pilih Kelurahan --</option>');
+                            $.each(data, function(index, kelurahan) {
+                                $kelurahan.append(
+                                    $('<option></option>')
+                                    .attr('value', kelurahan.id)
+                                    .text(kelurahan.nama)
+                                );
+                            });
+                            $kelurahan.prop('disabled', false);
+                        },
+                        error: function() {
+                            $kelurahan.html('<option value="">Error loading data</option>');
+                            $kelurahan.prop('disabled', false);
+                        }
+                    });
+                } else {
+                    $kelurahan.html('<option value="">-- Pilih Kecamatan Dahulu --</option>');
+                    $kelurahan.prop('disabled', true);
+                }
+            });
+
+            // Auto update status anak
+            function updateStatusAnak() {
+                const statusAyah = $('#modal_status_ayah').val();
+                const statusIbu = $('#modal_status_ibu').val();
+                const $statusAnak = $('#modal_status_anak');
+
+                if (statusAyah === 'Wafat' && statusIbu === 'Wafat') {
+                    $statusAnak.val('Anak Yatim Piatu');
+                } else if (statusAyah === 'Wafat') {
+                    $statusAnak.val('Anak Yatim');
+                } else if (statusIbu === 'Wafat') {
+                    $statusAnak.val('Anak Piatu');
+                } else {
+                    $statusAnak.val('Dalam Asuhan OT');
+                }
+            }
+
+            $('#modal_status_ayah, #modal_status_ibu').on('change', updateStatusAnak);
+
+            // Submit form
+            $('#formTambahOrangtua').on('submit', function(e) {
+                e.preventDefault();
+
+                const $form = $(this);
+                const $btnSubmit = $('#btnSimpanOrangtua');
+                const $alert = $('#modalAlert');
+
+                $btnSubmit.prop('disabled', true).html(
+                    '<span class="spinner-border spinner-border-sm me-2"></span>Menyimpan...'
+                );
+
+                $form.find('.is-invalid').removeClass('is-invalid');
+                $form.find('.invalid-feedback').text('');
+                $alert.addClass('d-none');
+
+                const formData = new FormData(this);
+
+                $.ajax({
+                    url: '{{ route('orangtua.store') }}',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            $alert.removeClass('d-none alert-danger')
+                                .addClass('alert-success')
+                                .html('<i class="bi bi-check-circle"></i> ' + response.message);
+
+                            const kecamatanName = $('#modal_kecamatan_id option:selected')
+                            .text();
+                            const kelurahanName = $('#modal_kelurahan_id option:selected')
+                            .text();
+
+                            const newOption = new Option(
+                                response.data.no_id + ' - ' + response.data.nama_lengkap,
+                                response.data.id,
+                                true,
+                                true
+                            );
+
+                            $(newOption).attr({
+                                'data-ayah': response.data.nama_ayah || '',
+                                'data-ibu': response.data.nama_ibu || '',
+                                'data-hp': response.data.no_hp || '',
+                                'data-alamat': response.data.alamat || '',
+                                'data-kelurahan-id': response.data.kelurahan_id || '',
+                                'data-kecamatan-id': response.data.kecamatan_id || '',
+                                'data-kelurahan': kelurahanName !==
+                                    '-- Pilih Kelurahan --' ? kelurahanName : '',
+                                'data-kecamatan': kecamatanName !==
+                                    '-- Pilih Kecamatan --' ? kecamatanName : '',
+                                'data-kota': 'Kota Ternate',
+                                'data-status-ayah': response.data.status_ayah,
+                                'data-status-ibu': response.data.status_ibu,
+                                'data-status-anak': response.data.status_anak
+                            });
+
+                            $('#orangtua_id').append(newOption).val(response.data.id).trigger(
+                                'change');
+
+                            $form[0].reset();
+
+                            setTimeout(function() {
+                                $('#tambahOrangtuaModal').modal('hide');
+                                $alert.addClass('d-none');
+                            }, 1500);
+                        }
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            const errors = xhr.responseJSON.errors;
+                            let errorMessage =
+                                '<strong>Terjadi kesalahan:</strong><ul class="mb-0 mt-2">';
+
+                            $.each(errors, function(field, messages) {
+                                const $field = $form.find('[name="' + field + '"]');
+                                $field.addClass('is-invalid');
+                                $field.next('.invalid-feedback').text(messages[0]);
+                                errorMessage += '<li>' + messages[0] + '</li>';
+                            });
+
+                            errorMessage += '</ul>';
+
+                            $alert.removeClass('d-none alert-success')
+                                .addClass('alert-danger')
+                                .html('<i class="bi bi-exclamation-circle"></i> ' +
+                                    errorMessage);
+                        } else {
+                            $alert.removeClass('d-none alert-success')
+                                .addClass('alert-danger')
+                                .html(
+                                    '<i class="bi bi-exclamation-circle"></i> Terjadi kesalahan saat menyimpan data'
+                                    );
+                        }
+
+                        $('#modalAlert')[0].scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    },
+                    complete: function() {
+                        $btnSubmit.prop('disabled', false).html(
+                            '<i class="bi bi-save"></i> Simpan Data');
+                    }
+                });
+            });
+
+            // Reset form when modal is closed
+            $('#tambahOrangtuaModal').on('hidden.bs.modal', function() {
+                $('#formTambahOrangtua')[0].reset();
+                $('#formTambahOrangtua').find('.is-invalid').removeClass('is-invalid');
+                $('#formTambahOrangtua').find('.invalid-feedback').text('');
+                $('#modalAlert').addClass('d-none');
+                $('#modal_kelurahan_id').html('<option value="">-- Pilih Kecamatan Dahulu --</option>')
+                    .prop('disabled', true);
             });
         });
     </script>

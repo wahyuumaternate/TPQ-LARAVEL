@@ -22,7 +22,7 @@
                             </div>
                         </div>
                     </div>
-                    <h1 class="mt-1 mb-3 display-5">{{ $stats['total_santri'] }}</h1>
+                    <h1 class="mt-1 mb-3 display-5">{{ $stats['total_santri'] ?? 0 }}</h1>
                     <div class="mb-0">
                         <span class="badge bg-success-subtle text-success me-2">
                             <i class="bi bi-person"></i> L: {{ $santriByGender['L'] ?? 0 }}
@@ -48,7 +48,7 @@
                             </div>
                         </div>
                     </div>
-                    <h1 class="mt-1 mb-3 display-5">{{ $stats['total_guru'] }}</h1>
+                    <h1 class="mt-1 mb-3 display-5">{{ $stats['total_guru'] ?? 0 }}</h1>
                     <div class="mb-0">
                         <span class="text-muted">Ustadz & Ustadzah</span>
                     </div>
@@ -69,7 +69,7 @@
                             </div>
                         </div>
                     </div>
-                    <h1 class="mt-1 mb-3 display-5">{{ $stats['total_orangtua'] }}</h1>
+                    <h1 class="mt-1 mb-3 display-5">{{ $stats['total_orangtua'] ?? 0 }}</h1>
                     <div class="mb-0">
                         <span class="text-muted">Wali Santri</span>
                     </div>
@@ -90,7 +90,7 @@
                             </div>
                         </div>
                     </div>
-                    <h1 class="mt-1 mb-3 display-5">{{ $stats['total_kelas'] }}</h1>
+                    <h1 class="mt-1 mb-3 display-5">{{ $stats['total_kelas'] ?? 0 }}</h1>
                     <div class="mb-0">
                         <span class="text-muted">Iqra & Al-Quran</span>
                     </div>
@@ -101,7 +101,7 @@
 
     <div class="row">
         <!-- Santri per Kelas Chart -->
-        <div class="col-xl-8">
+        <div class="col-xl-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white">
                     <h5 class="card-title mb-0">
@@ -114,24 +114,12 @@
             </div>
         </div>
 
-        <!-- Today's Attendance -->
-        <div class="col-xl-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white">
-                    <h5 class="card-title mb-0">
-                        <i class="bi bi-calendar-check text-success"></i> Absensi Hari Ini
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <canvas id="attendanceChart" height="260"></canvas>
-                </div>
-            </div>
-        </div>
+
     </div>
 
     <div class="row">
         <!-- Recent Progress -->
-        <div class="col-xl-8">
+        <div class="col-xl-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">
@@ -153,15 +141,20 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($recentProgress as $progress)
+                                @forelse($recentProgress ?? [] as $progress)
                                     <tr>
-                                        <td>{{ $progress->tanggal->format('d/m/Y') }}</td>
+                                        <td>{{ $progress->tanggal ? $progress->tanggal->format('d/m/Y') : '-' }}</td>
                                         <td>{{ $progress->santri->nama ?? '-' }}</td>
-                                        <td>{{ $progress->jilid }}</td>
+                                        <td>{{ $progress->jilid ?? '-' }}</td>
                                         <td>{{ $progress->halaman ?? '-' }}</td>
                                         <td>
-                                            @php $badge = $progress->status_badge; @endphp
-                                            <span class="badge {{ $badge['class'] }}">{{ $badge['label'] }}</span>
+                                            @if ($progress && method_exists($progress, 'getStatusBadgeClassAttribute'))
+                                                <span class="badge {{ $progress->status_badge_class }}">
+                                                    {{ $progress->status_label }}
+                                                </span>
+                                            @else
+                                                <span class="badge bg-secondary">-</span>
+                                            @endif
                                         </td>
                                         <td>{{ $progress->guru->nama ?? '-' }}</td>
                                     </tr>
@@ -177,38 +170,7 @@
             </div>
         </div>
 
-        <!-- Announcements -->
-        <div class="col-xl-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">
-                        <i class="bi bi-megaphone text-warning"></i> Pengumuman
-                    </h5>
-                    <a href="{{ route('pengumuman.index') }}" class="btn btn-sm btn-outline-primary">Kelola</a>
-                </div>
-                <div class="card-body">
-                    @forelse($pengumumans as $pengumuman)
-                        <div class="d-flex align-items-start mb-3">
-                            <div class="flex-shrink-0">
-                                @php $prioritasBadge = $pengumuman->prioritas_badge; @endphp
-                                <span class="badge {{ $prioritasBadge['class'] }}">
-                                    <i class="bi bi-bell"></i>
-                                </span>
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <strong>{{ $pengumuman->judul }}</strong>
-                                <p class="text-muted small mb-0">
-                                    {{ Str::limit($pengumuman->isi, 80) }}
-                                </p>
-                                <small class="text-muted">{{ $pengumuman->created_at->diffForHumans() }}</small>
-                            </div>
-                        </div>
-                    @empty
-                        <p class="text-muted text-center">Belum ada pengumuman</p>
-                    @endforelse
-                </div>
-            </div>
-        </div>
+
     </div>
 @endsection
 
@@ -217,77 +179,85 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Santri by Kelas Chart
-            const santriByKelasCtx = document.getElementById('santriByKelasChart').getContext('2d');
-            new Chart(santriByKelasCtx, {
-                type: 'bar',
-                data: {
-                    labels: {!! json_encode($santriByKelas->pluck('nama_kelas')) !!},
-                    datasets: [{
-                        label: 'Jumlah Santri',
-                        data: {!! json_encode($santriByKelas->pluck('santris_count')) !!},
-                        backgroundColor: [
-                            'rgba(54, 162, 235, 0.8)',
-                            'rgba(75, 192, 192, 0.8)',
-                            'rgba(255, 206, 86, 0.8)',
-                            'rgba(255, 99, 132, 0.8)',
-                            'rgba(153, 102, 255, 0.8)',
-                            'rgba(255, 159, 64, 0.8)',
-                            'rgba(199, 199, 199, 0.8)',
-                            'rgba(83, 102, 255, 0.8)',
-                        ],
-                        borderRadius: 5,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
+            const santriByKelasCtx = document.getElementById('santriByKelasChart');
+            if (santriByKelasCtx) {
+                const santriByKelasData = {!! json_encode($santriByKelas ?? collect()) !!};
+
+                new Chart(santriByKelasCtx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: santriByKelasData.map(item => item.nama_kelas || 'Unknown'),
+                        datasets: [{
+                            label: 'Jumlah Santri',
+                            data: santriByKelasData.map(item => item.santris_count || 0),
+                            backgroundColor: [
+                                'rgba(54, 162, 235, 0.8)',
+                                'rgba(75, 192, 192, 0.8)',
+                                'rgba(255, 206, 86, 0.8)',
+                                'rgba(255, 99, 132, 0.8)',
+                                'rgba(153, 102, 255, 0.8)',
+                                'rgba(255, 159, 64, 0.8)',
+                                'rgba(199, 199, 199, 0.8)',
+                                'rgba(83, 102, 255, 0.8)',
+                            ],
+                            borderRadius: 5,
+                        }]
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
                             }
                         }
                     }
-                }
-            });
+                });
+            }
 
             // Attendance Chart
-            const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
-            new Chart(attendanceCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Hadir', 'Izin', 'Sakit', 'Alpha'],
-                    datasets: [{
-                        data: [
-                            {{ $todayAttendance['hadir'] ?? 0 }},
-                            {{ $todayAttendance['izin'] ?? 0 }},
-                            {{ $todayAttendance['sakit'] ?? 0 }},
-                            {{ $todayAttendance['alpha'] ?? 0 }}
-                        ],
-                        backgroundColor: [
-                            'rgba(40, 167, 69, 0.8)',
-                            'rgba(23, 162, 184, 0.8)',
-                            'rgba(255, 193, 7, 0.8)',
-                            'rgba(220, 53, 69, 0.8)'
-                        ],
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
+            const attendanceCtx = document.getElementById('attendanceChart');
+            if (attendanceCtx) {
+                const attendanceData = {!! json_encode($todayAttendance ?? []) !!};
+
+                new Chart(attendanceCtx.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Hadir', 'Izin', 'Sakit', 'Alpha'],
+                        datasets: [{
+                            data: [
+                                attendanceData.hadir || 0,
+                                attendanceData.izin || 0,
+                                attendanceData.sakit || 0,
+                                attendanceData.alpha || 0
+                            ],
+                            backgroundColor: [
+                                'rgba(40, 167, 69, 0.8)',
+                                'rgba(23, 162, 184, 0.8)',
+                                'rgba(255, 193, 7, 0.8)',
+                                'rgba(220, 53, 69, 0.8)'
+                            ],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
         });
     </script>
 @endpush

@@ -15,15 +15,7 @@
                 </div>
             </div>
         </div>
-        <nav class="breadcrumbs">
-            <div class="container">
-                <ol>
-                    <li><a href="{{ route('landing') }}">Beranda</a></li>
-                    <li><a href="{{ url('/news') }}">Berita</a></li>
-                    <li class="current">{{ Str::limit($berita->judul, 50) }}</li>
-                </ol>
-            </div>
-        </nav>
+
     </div><!-- End Page Title -->
 
     <!-- Blog Details Section -->

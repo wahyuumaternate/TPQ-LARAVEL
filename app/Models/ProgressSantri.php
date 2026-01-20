@@ -22,7 +22,7 @@ class ProgressSantri extends Model
      *
      * @var array
      */
-    protected $fillable = ['santri_id', 'guru_id', 'tanggal', 'jilid', 'halaman', 'ayat', 'surah', 'nilai', 'status', 'catatan', 'hafalan', 'hafalan_surah', 'hafalan_ayat_dari', 'hafalan_ayat_sampai'];
+    protected $fillable = ['santri_id', 'guru_id', 'tanggal', 'jilid', 'halaman', 'dari_ayat', 'sampai_ayat', 'surah', 'status', 'catatan', 'hafalan', 'hafalan_surah', 'hafalan_ayat_dari', 'hafalan_ayat_sampai'];
 
     /**
      * The attributes that should be cast.
@@ -101,21 +101,6 @@ class ProgressSantri extends Model
     }
 
     /**
-     * Accessor untuk badge class nilai
-     */
-    public function getNilaiBadgeClassAttribute()
-    {
-        return match ($this->nilai) {
-            'A' => 'bg-success',
-            'B' => 'bg-primary',
-            'C' => 'bg-info',
-            'D' => 'bg-warning',
-            'E' => 'bg-danger',
-            default => 'bg-secondary',
-        };
-    }
-
-    /**
      * Accessor untuk badge class status
      */
     public function getStatusBadgeClassAttribute()
@@ -155,5 +140,21 @@ class ProgressSantri extends Model
             $info .= " ayat {$this->hafalan_ayat_dari}-{$this->hafalan_ayat_sampai}";
         }
         return $info;
+    }
+
+    /**
+     * Accessor untuk info bacaan ayat
+     */
+    public function getBacaanAyatInfoAttribute()
+    {
+        if (!$this->dari_ayat && !$this->sampai_ayat) {
+            return '-';
+        }
+
+        if ($this->dari_ayat && $this->sampai_ayat) {
+            return "Ayat {$this->dari_ayat} - {$this->sampai_ayat}";
+        }
+
+        return $this->dari_ayat ?? $this->sampai_ayat;
     }
 }

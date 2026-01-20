@@ -15,14 +15,7 @@
                 </div>
             </div>
         </div>
-        <nav class="breadcrumbs">
-            <div class="container">
-                <ol>
-                    <li><a href="{{ route('landing') }}">Beranda</a></li>
-                    <li class="current">Data Santri</li>
-                </ol>
-            </div>
-        </nav>
+
     </div><!-- End Page Title -->
 
     <!-- Stats Section -->

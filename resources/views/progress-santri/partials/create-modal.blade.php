@@ -94,7 +94,7 @@
                         </div>
 
                         <!-- Surah -->
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="surah" class="form-label">Surah</label>
                             <input type="text" class="form-control @error('surah') is-invalid @enderror"
                                 id="surah" name="surah" value="{{ old('surah') }}"
@@ -104,37 +104,29 @@
                             @enderror
                         </div>
 
-                        <!-- Ayat -->
-                        <div class="col-md-6">
-                            <label for="ayat" class="form-label">Ayat</label>
-                            <input type="text" class="form-control @error('ayat') is-invalid @enderror"
-                                id="ayat" name="ayat" value="{{ old('ayat') }}" placeholder="Contoh: 1-7">
-                            @error('ayat')
+                        <!-- Dari Ayat -->
+                        <div class="col-md-4">
+                            <label for="dari_ayat" class="form-label">Dari Ayat</label>
+                            <input type="text" class="form-control @error('dari_ayat') is-invalid @enderror"
+                                id="dari_ayat" name="dari_ayat" value="{{ old('dari_ayat') }}" placeholder="Contoh: 1">
+                            @error('dari_ayat')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        <!-- Nilai -->
-                        <div class="col-md-6">
-                            <label for="nilai" class="form-label">Nilai</label>
-                            <select class="form-select @error('nilai') is-invalid @enderror" id="nilai"
-                                name="nilai">
-                                <option value="">Pilih Nilai</option>
-                                <option value="A" {{ old('nilai') == 'A' ? 'selected' : '' }}>A - Sangat Baik
-                                </option>
-                                <option value="B" {{ old('nilai') == 'B' ? 'selected' : '' }}>B - Baik</option>
-                                <option value="C" {{ old('nilai') == 'C' ? 'selected' : '' }}>C - Cukup</option>
-                                <option value="D" {{ old('nilai') == 'D' ? 'selected' : '' }}>D - Kurang</option>
-                                <option value="E" {{ old('nilai') == 'E' ? 'selected' : '' }}>E - Sangat Kurang
-                                </option>
-                            </select>
-                            @error('nilai')
+                        <!-- Sampai Ayat -->
+                        <div class="col-md-4">
+                            <label for="sampai_ayat" class="form-label">Sampai Ayat</label>
+                            <input type="text" class="form-control @error('sampai_ayat') is-invalid @enderror"
+                                id="sampai_ayat" name="sampai_ayat" value="{{ old('sampai_ayat') }}"
+                                placeholder="Contoh: 7">
+                            @error('sampai_ayat')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <!-- Status -->
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label for="status" class="form-label">
                                 Status <span class="text-danger">*</span>
                             </label>

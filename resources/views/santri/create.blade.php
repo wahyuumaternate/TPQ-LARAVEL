@@ -104,108 +104,36 @@
             </div>
 
             <!-- Data Orang Tua -->
-            <div class="card border-0 shadow-sm mb-4">
-                <div class="card-header bg-info text-white">
-                    <h5 class="mb-0"><i class="bi bi-people-fill"></i> Data Orang Tua</h5>
+            <div class="col-12">
+                <label class="form-label fw-semibold">Pilih Orang Tua <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <select class="form-select @error('orangtua_id') is-invalid @enderror" id="orangtua_id"
+                        name="orangtua_id" style="width: 100%" required>
+                        <option value="">-- Pilih Orang Tua --</option>
+                        @foreach ($orangtuaList as $orangtua)
+                            <option value="{{ $orangtua->id }}" data-ayah="{{ $orangtua->nama_ayah }}"
+                                data-ibu="{{ $orangtua->nama_ibu }}" data-hp="{{ $orangtua->no_hp }}"
+                                data-alamat="{{ $orangtua->alamat }}" data-kelurahan-id="{{ $orangtua->kelurahan_id }}"
+                                data-kecamatan-id="{{ $orangtua->kelurahan?->kecamatan_id }}"
+                                data-status-ayah="{{ $orangtua->status_ayah }}"
+                                data-status-ibu="{{ $orangtua->status_ibu }}"
+                                data-status-anak="{{ $orangtua->status_anak }}"
+                                {{ old('orangtua_id') == $orangtua->id ? 'selected' : '' }}>
+                                {{ $orangtua->no_id }} - {{ $orangtua->nama_lengkap }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <button type="button" class="btn btn-success mt-1" data-bs-toggle="modal"
+                        data-bs-target="#tambahOrangtuaModal">
+                        <i class="bi bi-plus-circle"></i> Tambah Baru
+                    </button>
                 </div>
-                <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <label class="form-label fw-semibold">Pilih Orang Tua <span class="text-danger">*</span></label>
-                            <select class="form-select @error('orangtua_id') is-invalid @enderror" id="orangtua_id"
-                                name="orangtua_id" style="width: 100%" required>
-                                <option value="">-- Pilih Orang Tua --</option>
-                                @foreach ($orangtuaList as $orangtua)
-                                    <option value="{{ $orangtua->id }}" data-ayah="{{ $orangtua->nama_ayah }}"
-                                        data-ibu="{{ $orangtua->nama_ibu }}" data-hp="{{ $orangtua->no_hp }}"
-                                        data-alamat="{{ $orangtua->alamat }}"
-                                        data-kelurahan-id="{{ $orangtua->kelurahan_id }}"
-                                        data-kecamatan-id="{{ $orangtua->kelurahan?->kecamatan_id }}"
-                                        data-status-ayah="{{ $orangtua->status_ayah }}"
-                                        data-status-ibu="{{ $orangtua->status_ibu }}"
-                                        data-status-anak="{{ $orangtua->status_anak }}"
-                                        {{ old('orangtua_id') == $orangtua->id ? 'selected' : '' }}>
-                                        {{ $orangtua->no_id }} - {{ $orangtua->nama_lengkap }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('orangtua_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            <small class="text-muted">
-                                <i class="bi bi-info-circle"></i> Pilih orang tua dari database. Data alamat akan otomatis
-                                terisi.
-                                <a href="{{ route('orangtua.create') }}" target="_blank" class="text-primary">Tambah orang
-                                    tua baru</a>
-                            </small>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="alert alert-light border" id="orangtua-info" style="display: none;">
-                                <h6 class="mb-2"><i class="bi bi-info-circle text-primary"></i> Informasi Orang Tua</h6>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <small class="text-muted">Nama Ayah:</small>
-                                        <p class="mb-1 fw-semibold" id="info-ayah">-</p>
-                                        <span class="badge" id="badge-ayah"></span>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <small class="text-muted">Nama Ibu:</small>
-                                        <p class="mb-1 fw-semibold" id="info-ibu">-</p>
-                                        <span class="badge" id="badge-ibu"></span>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <small class="text-muted">Status Anak:</small>
-                                        <p class="mb-1"><span class="badge" id="badge-anak">-</span></p>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <small class="text-muted">No HP:</small>
-                                        <p class="mb-1" id="info-hp">-</p>
-                                    </div>
-                                    <div class="col-12 mt-2">
-                                        <small class="text-muted">Alamat:</small>
-                                        <p class="mb-0" id="info-alamat">-</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Hubungan Wali</label>
-                            <select class="form-select @error('hubungan_wali') is-invalid @enderror" id="hubungan_wali"
-                                name="hubungan_wali">
-                                <option value="">-- Pilih --</option>
-                                <option value="Ayah" {{ old('hubungan_wali') == 'Ayah' ? 'selected' : '' }}>Ayah
-                                </option>
-                                <option value="Ibu" {{ old('hubungan_wali') == 'Ibu' ? 'selected' : '' }}>Ibu</option>
-                                <option value="Kakek" {{ old('hubungan_wali') == 'Kakek' ? 'selected' : '' }}>Kakek
-                                </option>
-                                <option value="Nenek" {{ old('hubungan_wali') == 'Nenek' ? 'selected' : '' }}>Nenek
-                                </option>
-                                <option value="Paman" {{ old('hubungan_wali') == 'Paman' ? 'selected' : '' }}>Paman
-                                </option>
-                                <option value="Bibi" {{ old('hubungan_wali') == 'Bibi' ? 'selected' : '' }}>Bibi
-                                </option>
-                                <option value="Kakak" {{ old('hubungan_wali') == 'Kakak' ? 'selected' : '' }}>Kakak
-                                </option>
-                                <option value="Lainnya" {{ old('hubungan_wali') == 'Lainnya' ? 'selected' : '' }}>Lainnya
-                                </option>
-                            </select>
-                            @error('hubungan_wali')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">No HP Wali</label>
-                            <input type="text" class="form-control @error('no_hp_wali') is-invalid @enderror"
-                                id="no_hp_wali" name="no_hp_wali" value="{{ old('no_hp_wali') }}"
-                                placeholder="08xxxxxxxxxx">
-                            @error('no_hp_wali')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
+                @error('orangtua_id')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
+                <small class="text-muted">
+                    <i class="bi bi-info-circle"></i> Pilih orang tua dari database atau tambah baru jika belum terdaftar.
+                </small>
             </div>
 
             <!-- Alamat -->
@@ -372,6 +300,149 @@
                 </div>
             </div>
         </form>
+    </div>
+
+    <!-- Modal Tambah Orang Tua -->
+    <div class="modal fade" id="tambahOrangtuaModal" tabindex="-1" aria-labelledby="tambahOrangtuaModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="tambahOrangtuaModalLabel">
+                        <i class="bi bi-plus-circle"></i> Tambah Data Orang Tua Baru
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <form id="formTambahOrangtua">
+                    @csrf
+                    <div class="modal-body">
+                        <!-- Alert untuk error/success -->
+                        <div id="modalAlert" class="alert d-none" role="alert"></div>
+
+                        <div class="row g-3">
+                            <!-- Data Ayah -->
+                            <div class="col-12">
+                                <h6 class="border-bottom pb-2"><i class="bi bi-person"></i> Data Ayah</h6>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Nama Ayah</label>
+                                <input type="text" class="form-control" id="modal_nama_ayah" name="nama_ayah">
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">Pekerjaan Ayah</label>
+                                <input type="text" class="form-control" id="modal_pekerjaan_ayah"
+                                    name="pekerjaan_ayah">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">Status Ayah <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="modal_status_ayah" name="status_ayah" required>
+                                    <option value="Hidup" selected>Hidup</option>
+                                    <option value="Wafat">Wafat</option>
+                                </select>
+                            </div>
+
+                            <!-- Data Ibu -->
+                            <div class="col-12 mt-3">
+                                <h6 class="border-bottom pb-2"><i class="bi bi-person"></i> Data Ibu</h6>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Nama Ibu</label>
+                                <input type="text" class="form-control" id="modal_nama_ibu" name="nama_ibu">
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">Pekerjaan Ibu</label>
+                                <input type="text" class="form-control" id="modal_pekerjaan_ibu"
+                                    name="pekerjaan_ibu">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">Status Ibu <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="modal_status_ibu" name="status_ibu" required>
+                                    <option value="Hidup" selected>Hidup</option>
+                                    <option value="Wafat">Wafat</option>
+                                </select>
+                            </div>
+
+                            <!-- Status Anak -->
+                            <div class="col-12 mt-3">
+                                <h6 class="border-bottom pb-2"><i class="bi bi-shield-check"></i> Status</h6>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label fw-semibold">Status Anak <span
+                                        class="text-danger">*</span></label>
+                                <select class="form-select" id="modal_status_anak" name="status_anak" required>
+                                    <option value="Dalam Asuhan OT" selected>Dalam Asuhan Orang Tua</option>
+                                    <option value="Anak Yatim">Anak Yatim (Ayah Wafat)</option>
+                                    <option value="Anak Piatu">Anak Piatu (Ibu Wafat)</option>
+                                    <option value="Anak Yatim Piatu">Anak Yatim Piatu (Ayah & Ibu Wafat)</option>
+                                </select>
+                            </div>
+
+                            <!-- Kontak -->
+                            <div class="col-12 mt-3">
+                                <h6 class="border-bottom pb-2"><i class="bi bi-telephone"></i> Kontak</h6>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">No. HP/WA</label>
+                                <input type="text" class="form-control" id="modal_no_hp" name="no_hp"
+                                    placeholder="08xxxxxxxxxx">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">No. HP Alternatif</label>
+                                <input type="text" class="form-control" id="modal_no_hp_alternatif"
+                                    name="no_hp_alternatif">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label fw-semibold">Email</label>
+                                <input type="email" class="form-control" id="modal_email" name="email">
+                            </div>
+
+                            <!-- Alamat -->
+                            <div class="col-12 mt-3">
+                                <h6 class="border-bottom pb-2"><i class="bi bi-geo-alt"></i> Alamat</h6>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Alamat Lengkap</label>
+                                <textarea class="form-control" id="modal_alamat" name="alamat" rows="2"
+                                    placeholder="Jl. Sultan Babullah No. 123"></textarea>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label fw-semibold">Kecamatan</label>
+                                <select class="form-select" id="modal_kecamatan_id" name="modal_kecamatan_id">
+                                    <option value="">-- Pilih Kecamatan --</option>
+                                    @foreach ($kecamatanList as $kecamatan)
+                                        <option value="{{ $kecamatan->id }}">{{ $kecamatan->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label fw-semibold">Kelurahan</label>
+                                <select class="form-select" id="modal_kelurahan_id" name="kelurahan_id" disabled>
+                                    <option value="">-- Pilih Kecamatan Dahulu --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label fw-semibold">Kode Pos</label>
+                                <input type="text" class="form-control" id="modal_kode_pos" name="kode_pos"
+                                    maxlength="10">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-success" id="btnSimpanOrangtua">
+                            <i class="bi bi-save"></i> Simpan Data
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -542,6 +613,175 @@
                     reader.readAsDataURL(file);
                 }
             });
+            // Cascading dropdown di modal
+            $('#modal_kecamatan_id').on('change', function() {
+                const kecamatanId = $(this).val();
+                const $kelurahan = $('#modal_kelurahan_id');
+
+                if (kecamatanId) {
+                    $kelurahan.prop('disabled', true).html('<option value="">Loading...</option>');
+
+                    $.ajax({
+                        url: '/api/santri/kelurahan/' + kecamatanId,
+                        type: 'GET',
+                        success: function(data) {
+                            $kelurahan.html('<option value="">-- Pilih Kelurahan --</option>');
+                            $.each(data, function(index, kelurahan) {
+                                $kelurahan.append(
+                                    $('<option></option>')
+                                    .attr('value', kelurahan.id)
+                                    .text(kelurahan.nama)
+                                );
+                            });
+                            $kelurahan.prop('disabled', false);
+                        },
+                        error: function() {
+                            $kelurahan.html('<option value="">Error loading data</option>');
+                            $kelurahan.prop('disabled', false);
+                        }
+                    });
+                } else {
+                    $kelurahan.html('<option value="">-- Pilih Kecamatan Dahulu --</option>');
+                    $kelurahan.prop('disabled', true);
+                }
+            });
+
+            // Auto update status anak berdasarkan status ayah dan ibu
+            function updateStatusAnak() {
+                const statusAyah = $('#modal_status_ayah').val();
+                const statusIbu = $('#modal_status_ibu').val();
+                const $statusAnak = $('#modal_status_anak');
+
+                if (statusAyah === 'Wafat' && statusIbu === 'Wafat') {
+                    $statusAnak.val('Anak Yatim Piatu');
+                } else if (statusAyah === 'Wafat') {
+                    $statusAnak.val('Anak Yatim');
+                } else if (statusIbu === 'Wafat') {
+                    $statusAnak.val('Anak Piatu');
+                } else {
+                    $statusAnak.val('Dalam Asuhan OT');
+                }
+            }
+
+            $('#modal_status_ayah, #modal_status_ibu').on('change', updateStatusAnak);
+
+            // Submit form tambah orangtua via AJAX
+            $('#formTambahOrangtua').on('submit', function(e) {
+                e.preventDefault();
+
+                const $form = $(this);
+                const $btnSubmit = $('#btnSimpanOrangtua');
+                const $alert = $('#modalAlert');
+
+                // Disable button
+                $btnSubmit.prop('disabled', true).html(
+                    '<span class="spinner-border spinner-border-sm me-2"></span>Menyimpan...'
+                );
+
+                // Clear previous errors
+                $form.find('.is-invalid').removeClass('is-invalid');
+                $form.find('.invalid-feedback').text('');
+                $alert.addClass('d-none');
+
+                // Get form data
+                const formData = new FormData(this);
+
+                $.ajax({
+                    url: '{{ route('orangtua.store') }}',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            // Show success message
+                            $alert.removeClass('d-none alert-danger')
+                                .addClass('alert-success')
+                                .html('<i class="bi bi-check-circle"></i> ' + response.message);
+
+                            // Add new option to select
+                            const newOption = new Option(
+                                response.data.no_id + ' - ' + response.data.nama_lengkap,
+                                response.data.id,
+                                true,
+                                true
+                            );
+
+                            // Add data attributes
+                            $(newOption).attr({
+                                'data-ayah': response.data.nama_ayah || '',
+                                'data-ibu': response.data.nama_ibu || '',
+                                'data-hp': response.data.no_hp || '',
+                                'data-alamat': response.data.alamat || '',
+                                'data-kelurahan-id': response.data.kelurahan_id || '',
+                                'data-kecamatan-id': response.data.kecamatan_id || '',
+                                'data-status-ayah': response.data.status_ayah,
+                                'data-status-ibu': response.data.status_ibu,
+                                'data-status-anak': response.data.status_anak
+                            });
+
+                            $('#orangtua_id').append(newOption).trigger('change');
+
+                            // Reset form
+                            $form[0].reset();
+
+                            // Close modal after 1 second
+                            setTimeout(function() {
+                                $('#tambahOrangtuaModal').modal('hide');
+                                $alert.addClass('d-none');
+                            }, 1000);
+                        }
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            // Validation errors
+                            const errors = xhr.responseJSON.errors;
+                            let errorMessage =
+                                '<strong>Terjadi kesalahan:</strong><ul class="mb-0 mt-2">';
+
+                            $.each(errors, function(field, messages) {
+                                // Mark field as invalid
+                                const $field = $form.find('[name="' + field + '"]');
+                                $field.addClass('is-invalid');
+                                $field.next('.invalid-feedback').text(messages[0]);
+
+                                // Add to error list
+                                errorMessage += '<li>' + messages[0] + '</li>';
+                            });
+
+                            errorMessage += '</ul>';
+
+                            $alert.removeClass('d-none alert-success')
+                                .addClass('alert-danger')
+                                .html('<i class="bi bi-exclamation-circle"></i> ' +
+                                    errorMessage);
+                        } else {
+                            $alert.removeClass('d-none alert-success')
+                                .addClass('alert-danger')
+                                .html(
+                                    '<i class="bi bi-exclamation-circle"></i> Terjadi kesalahan saat menyimpan data'
+                                );
+                        }
+                    },
+                    complete: function() {
+                        // Enable button
+                        $btnSubmit.prop('disabled', false).html(
+                            '<i class="bi bi-save"></i> Simpan Data'
+                        );
+                    }
+                });
+            });
+
+            // Reset form when modal is closed
+            $('#tambahOrangtuaModal').on('hidden.bs.modal', function() {
+                $('#formTambahOrangtua')[0].reset();
+                $('#formTambahOrangtua').find('.is-invalid').removeClass('is-invalid');
+                $('#formTambahOrangtua').find('.invalid-feedback').text('');
+                $('#modalAlert').addClass('d-none');
+                $('#modal_kelurahan_id').html('<option value="">-- Pilih Kecamatan Dahulu --</option>')
+                    .prop('disabled', true);
+            });
+
         });
     </script>
 @endpush

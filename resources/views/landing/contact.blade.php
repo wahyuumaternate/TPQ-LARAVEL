@@ -15,14 +15,7 @@
                 </div>
             </div>
         </div>
-        <nav class="breadcrumbs">
-            <div class="container">
-                <ol>
-                    <li><a href="{{ route('landing') }}">Beranda</a></li>
-                    <li class="current">Kontak</li>
-                </ol>
-            </div>
-        </nav>
+
     </div><!-- End Page Title -->
 
     <!-- Contact Section -->
@@ -134,8 +127,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <select class="form-select @error('subject') is-invalid @enderror" name="subject"
-                                    required>
+                                <select class="form-select @error('subject') is-invalid @enderror" name="subject" required>
                                     <option value="">Pilih Topik</option>
                                     <option value="Pendaftaran Santri Baru"
                                         {{ old('subject') == 'Pendaftaran Santri Baru' ? 'selected' : '' }}>

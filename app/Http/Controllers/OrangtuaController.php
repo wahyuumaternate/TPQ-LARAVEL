@@ -73,6 +73,9 @@ class OrangtuaController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->ajax() || $request->wantsJson()) {
+            return $this->storeAjax($request);
+        }
         $validated = $request->validate([
             'nama_ayah' => 'nullable|string|max:255',
             'nama_ibu' => 'nullable|string|max:255',
@@ -271,5 +274,66 @@ class OrangtuaController extends Controller
         $orangtuas = $query->with('kelurahan.kecamatan')->orderBy('nama_ayah')->limit(20)->get();
 
         return response()->json($orangtuas);
+    }
+    /**
+     * Store via AJAX (untuk modal di form lain)
+     */
+    public function storeAjax(Request $request)
+    {
+        $validated = $request->validate([
+            'nama_ayah' => 'nullable|string|max:255',
+            'nama_ibu' => 'nullable|string|max:255',
+            'pekerjaan_ayah' => 'nullable|string|max:255',
+            'pekerjaan_ibu' => 'nullable|string|max:255',
+            'status_ayah' => 'required|in:Hidup,Wafat',
+            'status_ibu' => 'required|in:Hidup,Wafat',
+            'status_anak' => 'required|in:Dalam Asuhan OT,Anak Yatim,Anak Piatu,Anak Yatim Piatu',
+            'no_hp' => 'nullable|string|max:20',
+            'no_hp_alternatif' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
+            'alamat' => 'nullable|string',
+            'kelurahan_id' => 'nullable|exists:kelurahans,id',
+            'kode_pos' => 'nullable|string|max:10',
+        ]);
+
+        // Validasi minimal nama ayah atau ibu harus diisi
+        if (empty($validated['nama_ayah']) && empty($validated['nama_ibu'])) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'errors' => [
+                        'nama_ayah' => ['Minimal nama ayah atau nama ibu harus diisi'],
+                        'nama_ibu' => ['Minimal nama ayah atau nama ibu harus diisi'],
+                    ],
+                ],
+                422,
+            );
+        }
+
+        $validated['is_active'] = true;
+
+        $orangtua = Orangtua::create($validated);
+
+        // Load relasi
+        $orangtua->load('kelurahan.kecamatan');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data orang tua berhasil ditambahkan',
+            'data' => [
+                'id' => $orangtua->id,
+                'no_id' => $orangtua->no_id,
+                'nama_lengkap' => $orangtua->nama_lengkap,
+                'nama_ayah' => $orangtua->nama_ayah,
+                'nama_ibu' => $orangtua->nama_ibu,
+                'status_ayah' => $orangtua->status_ayah,
+                'status_ibu' => $orangtua->status_ibu,
+                'status_anak' => $orangtua->status_anak,
+                'no_hp' => $orangtua->no_hp,
+                'alamat' => $orangtua->alamat,
+                'kelurahan_id' => $orangtua->kelurahan_id,
+                'kecamatan_id' => $orangtua->kelurahan?->kecamatan_id,
+            ],
+        ]);
     }
 }
