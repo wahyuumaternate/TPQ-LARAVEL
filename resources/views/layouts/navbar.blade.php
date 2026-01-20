@@ -14,10 +14,10 @@
                     <span class="text-dark">{{ Auth::user()->name }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
-                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                    {{-- <a class="dropdown-item" href="{{ route('profile.edit') }}">
                         <i class="bi bi-person align-middle me-1"></i> Profil
                     </a>
-                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-divider"></div> --}}
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="dropdown-item">
